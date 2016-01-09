@@ -1,0 +1,8 @@
+- name: Install Docker Registry
+  hosts: docker
+  user: root
+  roles:
+    - registry
+    - "nginx"
+  vars:
+    storage_path: /data/registry/data

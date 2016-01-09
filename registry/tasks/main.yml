@@ -1,0 +1,21 @@
+# create a directory if it doesn't exist
+---
+- name: Install python-pip
+  apt: pkg=python-pip state=present #for pip
+
+- name: install docker-py 
+  pip: name=docker-py
+
+- name: create registry storage directory
+  file: path={{ storage_path }} state=directory mode=0755
+
+- name: registry
+  docker:
+    name: registry
+    image: registry:2.2.1
+    state: started
+    restart_policy: always
+    ports:
+    - "{{ ansible_eth0.ipv4.address }}:5000:5000"
+    volumes:
+    - "{{ storage_path }}:/var/lib/registry"
