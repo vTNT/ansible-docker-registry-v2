@@ -32,11 +32,11 @@
   command: openssl req -newkey rsa:4096 -subj "/C=CN/ST=XIAMEN/L=FUJIAN/O=IT/CN={{ nginx.domain }}" -nodes -sha256 -keyout {{ nginx.config_dir_path}}/domain.key -x509 -days 3650 -out {{ nginx.config_dir_path}}/domain.crt
   when: not docker_registry_cert_stat.stat.exists
 
-- name: registry Automatically Start Containers
+- name: check nginx conf exists
   stat: path={{ nginx.config_dir_path}}/nginx.conf
   register: nginx_conf_stat
 
-- name: registry Automatically Start Containers conf
+- name: stat nginx conf file
   template: src=nginx.j2 dest="{{ nginx.config_dir_path}}/nginx.conf"
   when: not nginx_conf_stat.stat.exists
 

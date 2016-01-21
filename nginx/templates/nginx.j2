@@ -10,7 +10,7 @@ upstream docker-registry {
 
 server {
   listen 443 ssl;
-  server_name default_server;
+  server_name {{ nginx.domain }};
 
   # SSL
   ssl on;
