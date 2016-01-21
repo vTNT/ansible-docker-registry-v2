@@ -4,11 +4,21 @@
 - name: Ensure nginx config dir
   file: path={{ nginx.config_dir_path }} state=directory mode=0755
 
-- name: Make basic auth for nginx
+- name: Make basic auth for nginx admin user
   htpasswd:
     path: "{{ nginx.config_dir_path }}/{{ nginx.auth_basic_user_file }}"
-    name: "{{ nginx.username }}"
-    password: "{{ nginx.password }}"
+    name: "{{ nginx.adminusername }}"
+    password: "{{ nginx.adminpassword }}"
+    owner: root
+    group: root 
+    mode: 0644
+    state: present
+
+- name: Make basic auth for nginx readonly user
+  htpasswd:
+    path: "{{ nginx.config_dir_path }}/{{ nginx.auth_basic_user_file }}"
+    name: "{{ nginx.readonlyusername }}"
+    password: "{{ nginx.readonlypassword }}"
     owner: root
     group: root 
     mode: 0644

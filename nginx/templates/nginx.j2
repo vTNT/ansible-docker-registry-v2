@@ -40,6 +40,18 @@ server {
     auth_basic "Registry realm";
     auth_basic_user_file /etc/nginx/conf.d/nginx.htpasswd;
 
+    set $test "";
+        if ($remote_user ~* "^admin?" ) {
+             set $test "${test}admin";
+        }
+        if ($request_method ~* "^(DELETE|PUT)$" ) {
+             set $test "${test}write";
+        }
+
+        if ($test = "write") {
+             return 401;
+        }
+
     ## If  is empty, the header will not be added.
     ## See the map directive above where this variable is defined.
     add_header 'Docker-Distribution-Api-Version' 'registry/2.0' always;
